@@ -177,9 +177,11 @@ class Sitemap {
 	 * @param string|null $priority The priority of this URL relative to other URLs on your site. Valid values range from 0.0 to 1.0.
 	 * @param string|null $changefreq How frequently the page is likely to change. Valid values are always, hourly, daily, weekly, monthly, yearly and never.
 	 * @param string|int|null $lastmod The date of last modification of url. Unix timestamp or any English textual datetime description.
+	 * @param string|null $alternate URL of the alternate page version. This value must be less than 2,048 characters.
+	 * @param string|null $alternatemedia value for media attribute in alternate URL.
 	 * @return Sitemap
 	 */
-	public function addItem($loc, $priority = self::DEFAULT_PRIORITY, $changefreq = NULL, $lastmod = NULL) {
+	public function addItem($loc, $priority = self::DEFAULT_PRIORITY, $changefreq = NULL, $lastmod = NULL, $alternate = NULL, $alternatemedia = NULL  ) {
 		if (($this->getCurrentItem() % self::ITEM_PER_SITEMAP) == 0) {
 			if ($this->getWriter() instanceof \XMLWriter) {
 				$this->endSitemap();
@@ -196,6 +198,14 @@ class Sitemap {
 			$this->getWriter()->writeElement('changefreq', $changefreq);
 		if ($lastmod)
 			$this->getWriter()->writeElement('lastmod', $this->getLastModifiedDate($lastmod));
+	        if ($alternate){
+	            $this->getWriter()->startElement('xhtml:link');
+	            $this->getWriter()->writeAttribute('rel','alternate');
+	            if ($alternatemedia)
+	                $this->getWriter()->writeAttribute('media',$alternatemedia);
+	            $this->getWriter()->writeAttribute('href',$alternate);
+	            $this->getWriter()->endElement();
+	        }
 		$this->getWriter()->endElement();
 		return $this;
 	}
