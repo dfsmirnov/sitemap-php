@@ -29,6 +29,7 @@ class Sitemap {
 
 	const EXT = '.xml';
 	const SCHEMA = 'http://www.sitemaps.org/schemas/sitemap/0.9';
+	const xmlns_xhtml = 'http://www.w3.org/1999/xhtml';
 	const DEFAULT_PRIORITY = 0.5;
 	const ITEM_PER_SITEMAP = 25000; //50000;
 	const SEPERATOR = '-';
@@ -168,6 +169,7 @@ class Sitemap {
 		$this->getWriter()->setIndent(true);
 		$this->getWriter()->startElement('urlset');
 		$this->getWriter()->writeAttribute('xmlns', self::SCHEMA);
+		$this->getWriter()->writeAttribute('xmlns:xhtml', self::xmlns_xhtml);
 	}
 
 	/**
